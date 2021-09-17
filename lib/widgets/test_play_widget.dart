@@ -18,13 +18,12 @@ class _TestPlayWidgetState extends State<TestPlayWidget> {
             width: 28,
             height: 28,
             decoration: BoxDecoration(
-                border: Border.all(
-                    color: widget.desc == widget.optionSelected
-                        ? widget.optionSelected == widget.correctAnswer
-                            ? Colors.green.withOpacity(0.7)
-                            : Colors.red.withOpacity(0.7)
-                        : Colors.grey,
-                    width: 1.4),
+                color: widget.desc == widget.optionSelected
+                    ? widget.optionSelected == widget.correctAnswer
+                        ? Colors.green.withOpacity(0.7)
+                        : Colors.red.withOpacity(0.7)
+                    : Colors.grey.withOpacity(0.5),
+                //   border: Border.all(width: 1.4),
                 borderRadius: BorderRadius.circular(30)),
             alignment: Alignment.center,
             child: Text(
@@ -32,9 +31,9 @@ class _TestPlayWidgetState extends State<TestPlayWidget> {
               style: TextStyle(
                   color: widget.optionSelected == widget.desc
                       ? widget.correctAnswer == widget.optionSelected
-                          ? Colors.green.withOpacity(0.7)
+                          ? Colors.green
                           : Colors.red
-                      : Colors.grey),
+                      : Colors.grey.withOpacity(0.5)),
             ),
           ),
           SizedBox(width: 8),

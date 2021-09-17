@@ -44,14 +44,12 @@ class _PlayTestState extends State<PlayTest> {
 
   @override
   void initState() {
-    print('${widget.testId}');
     databaseService.getTestData(widget.testId).then((value) {
       questionsSnapshot = value;
       _notAttempted = 0;
       _correct = 0;
       _incorrect = 0;
       total = questionsSnapshot.docs.length;
-      print('$total total');
       setState(() {});
     });
     super.initState();
@@ -153,7 +151,7 @@ class _TestPlayState extends State<TestPlay> {
             child: widget.testModel.option1 == null
                 ? Container()
                 : TestPlayWidget(
-                    correctAnswer: widget.testModel.option1,
+                    correctAnswer: widget.testModel.correctOption,
                     desc: "${widget.testModel.option1}",
                     option: '',
                     optionSelected: optionSelected,
@@ -181,7 +179,7 @@ class _TestPlayState extends State<TestPlay> {
             child: widget.testModel.option2 == null
                 ? Container()
                 : TestPlayWidget(
-                    correctAnswer: widget.testModel.option1,
+                    correctAnswer: widget.testModel.correctOption,
                     desc: "${widget.testModel.option2}",
                     option: '',
                     optionSelected: optionSelected,
@@ -209,7 +207,7 @@ class _TestPlayState extends State<TestPlay> {
             child: widget.testModel.option3 == null
                 ? Container()
                 : TestPlayWidget(
-                    correctAnswer: widget.testModel.option1,
+                    correctAnswer: widget.testModel.correctOption,
                     desc: "${widget.testModel.option3}",
                     option: '',
                     optionSelected: optionSelected,

@@ -15,7 +15,6 @@ class _AddQuestionState extends State<AddQuestion> {
   bool _isLoading = false;
   int index = 0;
   DatabaseService databaseService = DatabaseService();
-
   uploadQuestionData() async {
     if (_formKey.currentState.validate()) {
       setState(() {

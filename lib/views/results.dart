@@ -19,7 +19,7 @@ class _ResultsState extends State<Results> {
             children: [
               Text(
                 "${widget.correct}/ ${widget.total}",
-                style: TextStyle(fontSize: 25),
+                style: TextStyle(fontSize: 30),
               ),
               SizedBox(
                 height: 5,
@@ -27,7 +27,7 @@ class _ResultsState extends State<Results> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
-                  "Doğru yanıtınız ${widget.correct} yanlış yanıtınız ${widget.incorrect}.",
+                  "Toplam ${widget.correct + widget.incorrect} soru yanıtladınız. ${widget.correct} DOĞRU ${widget.incorrect} YANLIŞ.",
                   textAlign: TextAlign.center,
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/views/create_test.dart';
@@ -10,6 +11,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool click = false;
   Stream testStream;
   DatabaseService databaseService = DatabaseService();
 
@@ -28,6 +30,7 @@ class _HomeState extends State<Home> {
                       title: streamSnapshot.data.docs[index]['testTitle'],
                       desc: streamSnapshot.data.docs[index]['testDesc'],
                       testId: streamSnapshot.data.docs[index]['testId'],
+                      iconClick: click,
                     );
                   });
         },
@@ -53,6 +56,16 @@ class _HomeState extends State<Home> {
         backgroundColor: Color(0XFF494EC9),
         elevation: 0.0,
         brightness: Brightness.dark,
+        actions: [
+          FlatButton(
+            child: Icon(Icons.delete_outline_sharp, color: Colors.white),
+            onPressed: () {
+              setState(() {
+                click == false ? click = true : click = false;
+              });
+            },
+          )
+        ],
       ),
       body: testList(),
       floatingActionButton: FloatingActionButton(
@@ -70,9 +83,43 @@ class TestTile extends StatelessWidget {
   final String title;
   final String desc;
   final String testId;
-  TestTile({@required this.title, @required this.desc, @required this.testId});
+  final bool iconClick;
+  TestTile({@required this.title, @required this.desc, @required this.testId, @required this.iconClick});
   @override
   Widget build(BuildContext context) {
+    showAlertDialog(BuildContext context) {
+      // set up the buttons
+      Widget cancelButton = TextButton(
+        child: Text('İptal'),
+        onPressed: () => Navigator.of(context).pop(),
+      );
+      Widget continueButton = TextButton(
+        child: Text('Tamam'),
+        onPressed: () {
+          FirebaseFirestore.instance.collection('Test').doc('$testId').delete();
+          Navigator.of(context).pop();
+        },
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text('UYARI'),
+        content: Text('Oluşturduğunuz test silinecek!'),
+        actions: [
+          cancelButton,
+          continueButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => PlayTest(testId, title)));
@@ -100,6 +147,24 @@ class TestTile extends StatelessWidget {
                   SizedBox(height: 6),
                   Text(desc, style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400))
                 ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    showAlertDialog(context);
+                  },
+                  child: Visibility(
+                    visible: iconClick ? true : false,
+                    child: Icon(
+                      Icons.delete_outline_sharp,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
             )
           ],
